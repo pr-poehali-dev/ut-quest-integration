@@ -4,6 +4,8 @@ export interface Quest {
   type: 'text' | 'image' | 'audio' | 'video';
   content: string;
   mediaUrl?: string;
+  audioUrl?: string;      // URL аудиофайла
+  audioLabel?: string;    // подпись под плеером
   hint: string;
   answer: string; // нижний регистр
   points: number;
@@ -21,10 +23,12 @@ export const QUESTS: Quest[] = [
   },
   {
     id: 2,
-    type: 'image',
+    type: 'audio',
     title: 'Голос Сибири',
-    content: 'Исполнитель, прославивший сибирские города в своих песнях. Его называли голосом таёжного края. Как его фамилия?',
+    content: 'Послушайте фрагмент — это знаменитый вальс о таёжном городе. Как фамилия исполнителя, прославившего Усть-Илимск в своих песнях?',
     mediaUrl: 'https://cdn.poehali.dev/projects/f6ec705e-5434-4f28-ac42-1b102b709629/files/9db25fb1-7be0-4721-b1df-49acb87801db.jpg',
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    audioLabel: '🎵 Усть-Илимский вальс — фрагмент',
     hint: 'Автор «Усть-Илимского вальса», певец и актёр',
     answer: 'золотухин',
     points: 10,
@@ -59,9 +63,11 @@ export const QUESTS: Quest[] = [
   },
   {
     id: 6,
-    type: 'text',
+    type: 'audio',
     title: 'Богатство края',
-    content: 'Усть-Илимск окружён им со всех сторон. Из него делают бумагу, целлюлозу и мебель. Главное природное богатство Иркутской области.',
+    content: 'Прислушайтесь — это звуки сибирской природы. Усть-Илимск окружён им со всех сторон. Из него делают бумагу, целлюлозу и мебель. Главное природное богатство Иркутской области.',
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+    audioLabel: '🌲 Звуки сибирской тайги',
     hint: 'Из него делают бумагу и мебель, тянется на тысячи километров',
     answer: 'лес',
     points: 10,
@@ -87,9 +93,11 @@ export const QUESTS: Quest[] = [
   },
   {
     id: 9,
-    type: 'text',
+    type: 'audio',
     title: 'Легенда тайги',
-    content: 'В народных легендах таёжного края упоминается ключ (родник) с особыми свойствами. В его названии есть драгоценный металл. Как он называется?',
+    content: 'Послушайте — старожил рассказывает легенду о загадочном роднике таёжного края. В названии этого родника скрыт драгоценный металл. Как он называется?',
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+    audioLabel: '🎙 Легенды таёжного края — аудиофрагмент',
     hint: 'В названии — драгоценный металл белого цвета, не золото',
     answer: 'серебряный',
     points: 10,

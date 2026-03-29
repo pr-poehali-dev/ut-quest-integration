@@ -6,7 +6,7 @@ export const SITE_KEY = 'ТАЙНЫ--KEY-7501';
 export const API_ENDPOINT = 'https://api.master-putey.ru/integrate';
 export const MASTER_PATHS_WS = 'wss://masterpaths.app/api/connect';
 export const INTEGRATION_KEY = '9b4195a4-7281-46dd-abd2-566ec925ab39';
-export const NOTIFY_EMAIL = 'Games-Poc@yandex.ru';
+export const NOTIFY_EMAIL = 'successful-lucky@yandex.ru';
 export const PAYMENT_URL = 'https://yoomoney.ru/to/410017253212598/0';
 
 export interface Participant {

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { User } from '@/App';
 import Icon from '@/components/ui/icon';
+import AudioPlayer from '@/components/AudioPlayer';
 import { QUESTS } from '@/data/quests';
 import {
   getParticipant, upsertParticipant, getSettings,
@@ -38,7 +39,15 @@ export default function QuestPage({ user, onLoginClick }: Props) {
   const [attempts, setAttempts] = useState(0);
   const [ripple, setRipple] = useState(false);
   const [paidConfirm, setPaidConfirm] = useState(false);
+  const [muted, setMuted] = useState(() => localStorage.getItem('quest_muted') === 'true');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleMuteToggle = () => {
+    setMuted(prev => {
+      localStorage.setItem('quest_muted', String(!prev));
+      return !prev;
+    });
+  };
 
   const quest = QUESTS[currentIdx];
 
@@ -244,10 +253,26 @@ export default function QuestPage({ user, onLoginClick }: Props) {
           <span className="text-xs uppercase tracking-wider" style={{ color: 'var(--teal)' }}>
             Загадка {currentIdx + 1} из {QUESTS.length}
           </span>
-          <span className="font-oswald font-bold text-sm px-3 py-1 rounded-full"
-            style={{ backgroundColor: 'rgba(255,209,102,0.1)', color: 'var(--gold)' }}>
-            {score} очков
-          </span>
+          <div className="flex items-center gap-2">
+            {/* Глобальная кнопка звука */}
+            <button
+              onClick={handleMuteToggle}
+              title={muted ? 'Включить звук' : 'Выключить звук'}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all duration-200"
+              style={{
+                backgroundColor: muted ? 'rgba(239,68,68,0.08)' : 'rgba(64,195,176,0.08)',
+                border: `1px solid ${muted ? 'rgba(239,68,68,0.2)' : 'rgba(64,195,176,0.15)'}`,
+                color: muted ? '#f87171' : 'rgba(255,255,255,0.4)',
+              }}
+            >
+              <Icon name={muted ? 'VolumeX' : 'Volume2'} size={12} />
+              <span className="hidden sm:inline">{muted ? 'Звук выкл.' : 'Звук вкл.'}</span>
+            </button>
+            <span className="font-oswald font-bold text-sm px-3 py-1 rounded-full"
+              style={{ backgroundColor: 'rgba(255,209,102,0.1)', color: 'var(--gold)' }}>
+              {score} очков
+            </span>
+          </div>
         </div>
         <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
           <div className="h-full rounded-full transition-all duration-500"
@@ -280,12 +305,26 @@ export default function QuestPage({ user, onLoginClick }: Props) {
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 50%, var(--forest-mid) 100%)' }} />
             <div className="absolute top-3 left-3 px-2 py-1 rounded text-xs uppercase tracking-wider font-medium"
               style={{ backgroundColor: 'rgba(13,31,20,0.7)', color: 'var(--teal)', border: '1px solid rgba(64,195,176,0.3)' }}>
-              <Icon name="Image" size={10} className="inline mr-1" />Найди ответ на фото
+              <Icon name={quest.type === 'audio' ? 'Music' : 'Image'} size={10} className="inline mr-1" />
+              {quest.type === 'audio' ? 'Аудио-загадка' : 'Найди ответ на фото'}
             </div>
           </div>
         )}
 
         <div className="p-6">
+          {/* Аудиоплеер */}
+          {quest.audioUrl && (
+            <div className="mb-5">
+              <AudioPlayer
+                key={quest.id}
+                src={quest.audioUrl}
+                label={quest.audioLabel}
+                muted={muted}
+                onMuteToggle={handleMuteToggle}
+                autoPlay={true}
+              />
+            </div>
+          )}
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-oswald font-bold"
               style={{ backgroundColor: 'rgba(64,195,176,0.15)', color: 'var(--teal)' }}>
